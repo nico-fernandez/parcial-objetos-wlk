@@ -1,0 +1,69 @@
+import juego.*
+
+describe "Test del parcial"{
+	
+	// Instanciaciones de paises
+	const argentina = new Pais(coeficiente = 1, comienzo = 1816, fin = null)
+	const japon = new Pais(coeficiente = 10)
+	const rusia = new Pais(coeficiente = 15, comienzo = 1991, fin = null)
+	const yugoslavia = new Pais(coeficiente = 5, comienzo = 1922, fin = 1991)
+	
+	// Instanciaciones de estampillas
+	const nippon = new Estampilla(pais = japon, valorFacial = 300, anioDeEmision = 1974, motivo = "")
+	const argenta = new Conmemorativa(pais = argentina, valorFacial = 300, anioDeEmision = 1979, motivo = "Complejo Zárate Brazo Largo")
+	const yugoslita = new Estampilla(pais = yugoslavia, valorFacial = 500, anioDeEmision = 1913, motivo = "Cuervo Dorado")
+	
+	// Instanciaciones de Miembros
+	const juan = new Miembro(estampillas = [ nippon, argenta, yugoslita ], paisesDeInteres = [ japon ])
+	const pedro = new Miembro(estampillas = [ nippon, argenta ], paisesDeInteres = [ yugoslavia ])
+	
+	// Instanciación de Hojita Block
+	const p1 = new Estampilla(pais = rusia, valorFacial = 25, anioDeEmision = 1992, motivo = "")
+	const p2 = new Estampilla(pais = rusia, valorFacial = 15, anioDeEmision = 1992, motivo = "")
+	const p3 = new Estampilla(pais = rusia, valorFacial = 20, anioDeEmision = 1992, motivo = "")
+	const p4 = new Estampilla(pais = rusia, valorFacial = 35, anioDeEmision = 1992, motivo = "")
+	const p5 = new Estampilla(pais = rusia, valorFacial = 5, anioDeEmision = 1992, motivo = "")
+	const p6 = new Estampilla(pais = rusia, valorFacial = 22, anioDeEmision = 1992, motivo = "")
+	const p7 = new Estampilla(pais = rusia, valorFacial = 20, anioDeEmision = 1992, motivo = "")
+	const russiana = new HojitaBlock(estampillas = [p1,p2,p3,p4,p5,p6,p7 ], pais = rusia, anioDeEmision = 1992, motivo = "Carl Marx")
+	
+	
+	test "La estampilla Argenta tiene una cotización de 900 por ser conmemorativa" {
+		assert.that(argenta.cotizacion() == 900)
+	}
+	
+	test "La de Japón sale 3000" {
+		assert.that(nippon.cotizacion() == 3000)
+	}
+	
+	test "Si la estampilla de japón fuera del año 1918, saldría 3010"{
+		nippon.anioDeEmision(1918)
+		assert.equals(nippon.cotizacion(), 3010)
+	}
+	
+	test "Si la nippon fuera del año 1880, su cotizacion ascendería a 3150" {
+		nippon.anioDeEmision(1880)
+		assert.equals(nippon.cotizacion(), 3150)
+	}
+	
+	test "Si japón se hubiera fundado luego de 1880, dicha estampilla valdría 1000000" {
+		japon.comienzo(1923)
+		nippon.anioDeEmision(1880)
+		assert.that(nippon.cotizacion() == 1000000)
+	}
+	
+	test "Cotizacion de una hojita block "{
+		assert.equals(4260, russiana.cotizacion())
+	}
+	
+	test "A pedro le interesa la yugoslita" {
+		assert.that(pedro.leInteresa(yugoslita))
+	}
+	
+	test "Juan tiene la coleccion mejor cotizada" {
+		asociacion.miembros([juan, pedro])
+		assert.that(asociacion.coleccionMayorCotizacion() == juan)
+	}
+
+}
+
